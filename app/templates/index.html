@@ -1,140 +1,209 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="zh">
 	<head>
 		<meta charset="UTF-8">
 		<meta http-equiv="X-UA-Compatible" content="IE=edge">
 		<meta name="viewport" content="width=device-width, initial-scale=1.0">
-		<title>lesson1</title>
-		<script src="static/jquery.min.js"></script>
+		<title>sulver_4</title>
 		<script src="static/aframe.min.js"></script>
-		
+		<!-- <script src="https://aframe.io/releases/1.0.4/aframe.min.js"></script> -->
+		<script src="static/jquery.min.js"></script>
+		<style>
+			body {
+				clear: both;
+				background-color: #dfe4eb;
+			}
+
+			.container {
+				position: absolute;
+				width: 100%;
+				left: 50%;
+				top: 50%;
+				transform: translate(-50%, -50%);
+				-ms-transform: translate(-50%, -50%);
+				z-index: 1000;
+				visibility: visible;
+			}
+
+			.btn {
+				--bg-color: #e5e5e5;
+				--font-color:#333;
+				position: absolute;
+				left: 50%;
+				top: 0;
+				transform: translate(-50%, -50%);
+				-ms-transform: translate(-50%, -50%);
+				border-radius: 5px;
+				padding: 16px 30px;
+				text-align: center;
+				cursor: pointer;
+				text-decoration: none;
+				color: black;
+				background-color: #e5e5e5;
+				font-size: 40px;
+				border: 0;
+				box-shadow: inset 2px 2px 2px 0px rgb(255 255 255 / 50%), 7px 7px 20px 0px rgb(0 0 0 / 10%), 4px 4px 5px 0px rgb(0 0 0 / 10%);
+				transition: all 600ms ease-out;
+				/* 以下为核心代码 */
+				background-size: 200% 100%;
+				background-position: right bottom;
+				background-image: linear-gradient(to right, var(--font-color) 50%, var(--bg-color) 50%);
+			}
+
+			.btn:hover {
+				color: white;
+				background-position: left bottom;
+			}
+
+			.tips {
+				display: none;
+				z-index: 1000;
+				position: absolute;
+				left: 50%;
+				top: 45%;
+				transform: translate(-50%, -50%);
+				-ms-transform: translate(-50%, -50%);
+				/* width: 150px; */
+				/* height: 150px; */
+				background-color: white;
+				font-size: 35px;
+				padding: 10px;
+				background-color: fff;
+				border-radius: 10px;
+				color: #333;
+			}
+		</style>
 	</head>
 	<body>
-		<a-scene>
-			<!-- 资源？ -->
+		<a-scene id="mainscene" visible="false">
 			<a-assets>
-				<audio id="click-sound">
-					<source src="static/sulver_4.mp3" type="audio/mpeg">
-					<source src="static/sulver_4.ogg" type="audio/ogg">
-				</audio>
+				<img id="bg" crossorigin="anonymous" src="static/bgs4.jpg">
 				<img id="start" crossorigin="anonymous" src="static/start.png">
 				<img id="star" crossorigin="anonymous" src="static/star.png">
 				<img id="arrow" crossorigin="anonymous" src="static/arrow.png">
 				<img id="fog" crossorigin="anonymous" src="static/arrow2.png">
 				<img id="correct" crossorigin="anonymous" src="static/correct.png">
 				<img id="wrong" crossorigin="anonymous" src="static/wrong.png">
-				<img id="bg" crossorigin="anonymous" src="static/bgs4.jpg">
 			</a-assets>
-			<a-sky src="#bg" radius="15" rotation="" 0 0 0"></a-sky>
+			<!-- bg -->
+			<a-sky src="#bg" radius="15" position="0 0 0" rotation="0 0 0"></a-sky>
+			<!-- objs -->
+			<a-entity class="fox" position="1.6 -2.9 4" rotation="12 40 0" canvas-updater>
+				<a-image class="link" src="#star" position="0 -0.25 0" width="2" height="1"></a-image>
+				<a-image class="arrow" src="#arrow" width="2" height="1.5" visible="false"></a-image>
+				<a-image class="check" src="#correct" position="0 -0.3 0" rotation="0 180 0" width="0.6" height="0.6" 
+					visible="false"></a-image>
+			</a-entity>
+			<a-entity class="dog" position="2.8 0.2 4" rotation="0 40 180" canvas-updater>
+				<a-image class="link" src="#star" position="0 -0.4 0" width="2.3" height="1.3"></a-image>
+				<a-image class="arrow" src="#arrow" width="2.2" height="2.2" visible="false"></a-image>
+				<a-image class="check" src="#correct" position="0 -0.4 0" rotation="0 180 180" width="0.6" height="0.6"
+					visible="false"></a-image>
+			</a-entity>
+			<a-entity class="fog" position="-5 2.4 -5" rotation="8 40 0" canvas-updater>
+				<a-image class="link" src="#star" position="0 -0.1 0" width="2.5" height="2.4"></a-image>
+				<a-image class="arrow" src="#fog" width="2.2" height="2.5" visible="false"></a-image>
+				<a-image class="check" src="#correct" position="0 -0.3 0" rotation="0 0 0" width="1.2" height="1.2"
+					visible="false"></a-image>
+			</a-entity>
+			<a-entity class="box" position="-0.5 -1.2 5" rotation="0 0 -110" canvas-updater>
+				<a-image class="link" src="#star" position="0 -0.35 0" width="1.9" height="1.2"></a-image>
+				<a-image class="arrow" src="#arrow" width="2" height="2" visible="false"></a-image>
+				<a-image class="check" src="#correct" position="0 -0.4 0" rotation="180 0 90" width="0.5" height="0.5"
+					visible="false"></a-image>
+			</a-entity>
+			<a-entity class="log" position="3.8 -2.4 2.1" rotation="20 80 90" canvas-updater>
+				<a-image class="link" src="#star" position="0 -0.4 0" width="2" height="1.2"></a-image>
+				<a-image class="arrow" src="#arrow" width="2" height="2" visible="false"></a-image>
+				<a-image class="check" src="#correct" position="0 -0.4 0" rotation="180 0 -90" width="0.7" height="0.7"
+					visible="false"></a-image>
+			</a-entity>
+
+			<!-- startBtn -->
+			<a-entity position="1.7 1.2 -5" rotation="0 -12 0" start-btn>
+				<a-text value="Press here" width="6" position="-0.6 0.6 0" color="#fff">
+				</a-text>
+				<a-entity class="start" event-set__mouseenter="scale: 1.2 1.2 1" event-set__mouseleave="scale: 1 1 1"
+					canvas-updater>
+					<a-image class="link" src="#start" width=".8" height=".8"></a-image>
+				</a-entity>
+			</a-entity>
 
 			<!-- text -->
-			<a-text class="tips" font="kelsonsans" value="Please ->" width="6" position="0 0 -5" rotation="0 0 0" visible="false">
-			</a-text>
-			<a-text font="kelsonsans" value="Press it！" width="6" position="2.1 1.6 -5" rotation="0 -20 0">
-			</a-text>
-			<a-text class="res-count" font="kelsonsans" value="Result(0/5)" width="6" position="3.7 1.8 -5" rotation="0 -20 0">
-			</a-text>
-			<a-box opacity="0.3" color="white" width="2.5" height="2.5" depth="0.001" position="4.8 0.3 -5"
-				rotation="0 -20 0">
-				<a-entity class="fox-text" visible="false">
-					<a-image class="checkImg" src="#wrong" width="0.5" height="0.5" position="3.5 2 -5"></a-image>
-					<a-text font="kelsonsans" color="white" align="left" baseline="center" position="-0.8 1 0"
-						wrap-count="25" value="fox">
+			<a-box color="grey" width="2.2" height="2.6" position="3.6 0.8 -5" rotation="0 -10 0" opacity="0.3"
+				depth="0.001">
+				<a-text id="res-count" value="Result(0/4)" width="6" position="-0.75 1 0" rotation="0 0 0" color="#fff">
+				</a-text>
+				<a-entity class="fox-text" position="-1 0.6 0" visible='false'>
+					<a-image class="checkImg" src="#wrong" width="0.3" height="0.3" position="1.7 0 0"></a-image>
+					<a-text color="#fff" align="left" baseline="center" wrap-count="30" value="fox">
 					</a-text>
 				</a-entity>
-				<a-entity class="dog-text" visible="false">
-					<a-image class="checkImg" src="#wrong" width="0.5" height="0.5" position="3.5 1.3 -5"></a-image>
-					<a-text font="kelsonsans" color="white" align="left" baseline="center" position="-0.8 0.6 0"
-						wrap-count="25" value="dog">
+				<a-entity class="dog-text" position="-1 0.2 0" visible='false'>
+					<a-image class="checkImg" src="#wrong" width="0.3" height="0.3" position="1.7 0 0"></a-image>
+					<a-text color="#fff" align="left" baseline="center" wrap-count="30" value="dog">
 					</a-text>
 				</a-entity>
-				<a-entity class="fog-text" visible="false">
-					<a-image class="checkImg" src="#wrong" width="0.5" height="0.5" position="3.5 0.5 -5"></a-image>
-					<a-text font="kelsonsans" color="white" align="left" baseline="center" position="-0.8 0.2 0"
-						wrap-count="25" value="fog"></a-text>
+				<a-entity class="fog-text" position="-1 -0.2 0" visible='false'>
+					<a-image class="checkImg" src="#wrong" width="0.3" height="0.3" position="1.7 0 0"></a-image>
+					<a-text color="#fff" align="left" baseline="center" wrap-count="30" value="fog"></a-text>
 				</a-entity>
-				<a-entity class="box-text" visible="false">
-					<a-image class="checkImg" src="#wrong" width="0.5" height="0.5" position="3.5 -0.25 -5">
-					</a-image>
-					<a-text font="kelsonsans" color="white" align="left" baseline="center" position="-0.8 -0.2 0"
-						wrap-count="25" value="box">
+				<a-entity class="box-text" position="-1 -0.6 0" visible='false'>
+					<a-image class="checkImg" src="#wrong" width="0.3" height="0.3" position="1.7 0 0"></a-image>
+					<a-text color="#fff" align="left" baseline="center" wrap-count="30" value="box">
 					</a-text>
 				</a-entity>
-				<a-entity class="log-text" visible="false">
-					<a-image class="checkImg" src="#wrong" width="0.5" height="0.5" position="3.5 -0.9 -5"></a-image>
-					<a-text font="kelsonsans" color="white" align="left" baseline="center" position="-0.8 -0.6 0"
-						wrap-count="25" value="log">
+				<a-entity class="log-text" position="-1 -1 0" visible='false'>
+					<a-image class="checkImg" src="#wrong" width="0.3" height="0.3" position="1.7 0 0"></a-image>
+					<a-text color="#fff" align="left" baseline="center" wrap-count="30" value="log">
 					</a-text>
 				</a-entity>
 			</a-box>
 
-			<!-- objs -->
-			<a-entity class="startbtn" start-btn position="2.6 1 -5" rotation="0 0 0"
-				event-set__mouseenter="scale: 1.2 1.2 1" event-set__mouseleave="scale: 1 1 1" canvas-updater>
-				<a-image class="link" src="#start" width=".8" height=".8"></a-image>
-			</a-entity>
-			<a-entity class="fog" position="-5 2 -5" rotation="0 0 0" visible="false"
-				event-set__mouseenter="scale: 1.2 1.2 1" event-set__mouseleave="scale: 1 1 1" canvas-updater>
-				<a-image class="link" src="#fog" width="2.5" height="2.5"></a-image>
-			</a-entity>
-			<a-entity class="fog_check" position="-5 2 -5" rotation="0 0 0" visible="false">
-				<a-image class="checkImg" src="#correct" width="0.8" height="0.8"></a-image>
-			</a-entity>
-			<a-entity class="fox" position="2 -3.5 5" rotation="0 30 0" visible="false">
-				<a-image class="link" src="#arrow" width="1.5" height="1.5"></a-image>
-			</a-entity>
-			<a-entity class="fox_check" position="2 -3.7 5" rotation="-10 210 0" visible="false">
-				<a-image class="checkImg" src="#correct" width="0.5" height="0.5"></a-image>
-			</a-entity>
-			<a-entity class="dog" position="6 -2 5" rotation="0 65 90" visible="false">
-				<a-image class="link" src="#arrow" width="2" height="2"></a-image>
-			</a-entity>
-			<a-entity class="dog_check" position="6 -2 4.5" rotation="0 65 0" visible="false">
-				<a-image class="checkImg" src="#correct" width="0.5" height="0.5"></a-image>
-			</a-entity>
-			<a-entity class="log" position="9 -6 5" rotation="15 75 85" visible="false">
-				<a-image class="link" src="#arrow" width="3.5" height="3.5"></a-image>
-			</a-entity>
-			<a-entity class="log_check" visible="false">
-				<a-image class="checkImg" src="#correct" width="1" height="1" position="9 -6 4.3" rotation="0 90 0">
-				</a-image>
-			</a-entity>
-			<a-entity class="box" position="-0.5 -1 5" rotation="0 0 230" visible="false">
-				<a-image class="link" src="#arrow" width="1.5" height="1.5"></a-image>
-			</a-entity>
-			<a-entity class="box_check" position="-0.7 -0.75 5" rotation="0 180 0" visible="false">
-				<a-image class="checkImg" src="#correct" width="0.5" height="0.5"></a-image>
-			</a-entity>
-
 			<!-- Camera + cursor. -->
 			<a-entity>
-				<a-entity camera look-controls wasd-controls id=camera>
+				<a-entity camera look-controls wasd-controls id="camera">
 					<a-entity position="0 0 -3"
 						animation__click="property: scale; startEvents: click; easing: easeInCubic; dur: 150; from: 1 1 1; to: 1 1 1"
 						animation__fusing="property: scale; startEvents: fusing; easing: easeInCubic; dur: 5500; from: 1 1 1; to: 10 10 10"
 						animation__mouseleave="property: scale; startEvents: mouseleave; easing: easeInCubic; dur: 500; to: 1 1 1"
 						geometry="primitive: ring; radiusInner: 0.02; radiusOuter: 0.03;"
 						material="color: black; shader: flat" cursor="maxDistance: 30; fuse: true; fuseTimeout:5500"
-						raycaster="objects: .link, .link2">
+						raycaster="objects: .link">
 					</a-entity>
 				</a-entity>
 			</a-entity>
-
+			<!-- end scene -->
 		</a-scene>
+		<audio preload controls id="sound" visible="false">
+			<source src="static/sulver_4.mp3" type="audio/mpeg">
+			<source src="static/sulver_4.ogg" type="audio/ogg">
+		</audio>
+		<div class="container">
+			<button class="btn">Start</button>
+		</div>
+		<div class="tips">
+			Please click <img width="35" src="static/start.png"> first >>>
+		</div>
 		<script>
-			let words = ['fox', 'dog', 'fog', 'box', 'log']
-			var dur = [4, 6, 8, 10, 12]
+			var words = ['fox', 'dog', 'fog', 'box', 'log']
+			var end = 13.6
+			var aobj = {
+				'fox': [4.5, 5.4],
+				'dog': [6.5, 7.3],
+				'fog': [8.8, 9.5],
+				'box': [10.6, 11.4],
+				'log': [12.4,13.3],
+			}
 			let index = 0
 			let answer = ''
 			var flag = 0
-
-			var sound = $("#click-sound")[0];
+			var a = document.getElementById('sound');
 			AFRAME.registerComponent('start-btn', {
 				schema: {
 					target: {
 						type: 'selector'
 					},
-					
 				},
 				init: function() {
 					var data = this.data;
@@ -145,20 +214,20 @@
 							clearTimeout(_timer);
 						}
 						_timer = setTimeout(function() {
-							sound.currentTime = dur[index]
-							// 选对才播放下一个
-							if (!flag && index > 0) {
-								return;
+							// 选对才播放下一个 
+							if (flag) {
+								index++;
 							}
-							sound.play();
+							let word = words[index]
+							a.currentTime = aobj[word][0]
+							a.play();
 							answer = words[index]
-							console.log('answer=', answer);
 							flag = 0;
-							index++;
-							setTimeout(function() {
-								sound.pause()
-							}, 1500)
 
+							let dur = Math.ceil((aobj[word][1] - aobj[word][0]) * 1000)
+							setTimeout(function() {
+								a.pause()
+							}, dur)
 						}, 5500);
 					});
 					el.addEventListener("mouseleave", function() {
@@ -169,85 +238,146 @@
 					});
 				}
 			});
-			for (i in words) {
+
+			function sceneInit() {
 				var answer_timer;
-				$('.' + words[i])[0].addEventListener('mouseenter', function(e) {
-					let _this = this
-					let u_answer = $(_this).attr('class').trim()
-					this.setAttribute("visible", true);
-					
-					if (answer_timer) {
-						clearTimeout(answer_timer);
-					}
-					answer_timer = setTimeout(function() {
-						if (answer != '') {
-							// 显示答案
-							if (!$('.' + answer + '-text')[0].getAttribute('visible')) {
-								$('.' + answer + '-text')[0].setAttribute('visible', "true")
-							}
-							if (u_answer === answer) {
-								//更改符号
-								$('.' + answer + '-text').find('.checkImg')[0].setAttribute('src', "#correct")
-								$('.' + answer + '_check').find('.checkImg')[0].setAttribute('src', "#correct")
-								$('.' + answer + '_check')[0].setAttribute("visible", true)
-								sound.currentTime = 0
-								sound.play();
-								setTimeout(function() {
-									sound.pause()
-									// todo 改成特效？
-									if(index==words.length){
-										alert('You have completed this course！');
-										sessionStorage.setItem('completed', 'true');
-										window.location.href="start.html"
-									}
-								}, 1500)
+				for (i in words) {
+					var el = $('.' + words[i]).find('.link')[0]
 
-								console.log('正确')
-								// 取消跟踪
-								$('.' + answer).find('.link').removeClass('link')
-
-								flag = 1;
-								$('.res-count')[0].setAttribute("value", "Result(" + index + "/5)")
-								// 标记：答对之后，开始下一题之前，不要再播放错误音频
-								answer = ''
-							} else {
-								console.log('错误')
-								flag = 0;
-								sound.currentTime = 2
-								sound.play();
-								$('.' + u_answer + '_check').find('.checkImg')[0].setAttribute('src', "#wrong")
-								$('.' + u_answer + '_check')[0].setAttribute("visible", true)
-								setTimeout(function() {
-									sound.pause()
-									sound.currentTime = dur[index - 1]
+					el.addEventListener('mouseenter', function(e) {
+						let _this = this
+						let _check = $(_this).parent().find('.check')[0];
+						let _link = $(_this).parent().find('.link')[0];
+						let u_answer = $(_this).parent().attr('class');
+						//show arrow
+						// $(_this).parent()[0].setAttribute("visible", true);
+						$(_this).parent().find('.arrow')[0].setAttribute("visible", true);
+						if (answer_timer) {
+							clearTimeout(answer_timer);
+						}
+						answer_timer = setTimeout(function() {
+							if (answer != '') {
+								var text_el = document.getElementsByClassName(answer + '-text')[0]
+								// show answer
+								if (!document.getElementsByClassName(answer + '-text')[0].getAttribute(
+										'visible')) {
+									document.getElementsByClassName(answer + '-text')[0].setAttribute('visible',
+										"true")
+								}
+								if (u_answer === answer) {
+									//更改符号
+									text_el.children[0].setAttribute('src', "#correct")
+									_check.setAttribute('src', "#correct")
+									sound.currentTime = 0
 									sound.play();
 									setTimeout(function() {
 										sound.pause()
+										// completed
+										if (index + 1 == words.length) {
+											alert('You have completed this course！');
+											document.getElementsByClassName('btn')[0].innerHTML =
+												"Learn again!",
+												document.getElementById('mainscene').setAttribute(
+													'visible', 'false')
+											document.getElementById('sound').style.display = "none"
+											clearScene()
+											// document.getElementsByClassName('container')[0].visibility="visible"
+											// document.getElementsByClassName('btn')[0].visibility="visible"
+											$('.container').show()
+										}
 									}, 1500)
-								}, 1500)
+									console.log('right')
+									// remove Listener
+									$(_link).removeClass("link")
+									flag = 1;
+									let count = parseInt(index + 1)
+									document.getElementById('res-count').setAttribute("value", "Result(" +
+										count + "/" + words.length + ")")
+									// stop error tips
+									answer = ''
+								} else {
+									let word = words[index]
+									console.log('wrong', word)
+									flag = 0;
+									sound.currentTime = 2
+									sound.play();
+									_check.setAttribute('src', "#wrong")
+									let dur = Math.ceil((aobj[word][1] - aobj[word][0]) * 1000)
+									setTimeout(function() {
+										sound.pause()
+										sound.currentTime = aobj[word][0]
+										sound.play();
+										setTimeout(function() {
+											sound.pause()
+										}, dur)
+									}, 1500)
+								}
+								// show icon
+								_check.setAttribute("visible", true)
+							} else {
+								//show tips to play
+								if (answer == '') {
+									$('.tips').show(300)
+								}
 							}
-						} else {
-							//提示去点击播放按钮 todo
-							// if (answer == '') {
-							// 	console.log($(_this)[0].getAttribute('position'),$(_this)[0].getAttribute('rotation'))
-							// }
-							
+						}, 5500);
+
+
+					})
+
+					el.addEventListener('mouseleave', function(event) {
+						let _this = this;
+						// hide arrow
+						$(_this).parent().find('.arrow')[0].setAttribute("visible", false);
+						//  hide icon
+						if ($(_this).hasClass('link')) {
+							$(_this).parent().find('.check')[0].setAttribute('visible', "false")
 						}
-					}, 5500);
-				});
-				$('.' + words[i])[0].addEventListener('mouseleave', function(event) {
-					this.setAttribute("visible", false);
-					let obj_name = $(this).attr('class').trim()
-					// 有镜头追踪时候才隐藏
-					if ($(this).find('.link').length > 0) {
-						$('.' + obj_name + '_check')[0].setAttribute('visible', "false")
+						// hide tips
+						$('.tips').hide(300)
+						if (answer_timer) {
+							clearTimeout(answer_timer);
+							answer_timer = null;
+						}
+
+					});
+				}
+			}
+			sceneInit()
+
+			document.getElementsByClassName('btn')[0].addEventListener('click', function() {
+				var _this = this
+				// this.parentNode.style.visibility="hidden";
+				$('.container').hide()
+				document.getElementById('mainscene').setAttribute('visible', "true")
+				document.getElementById('mainscene').style.display = 'block'
+				sound.play();
+				sound.pause();
+				sound.currentTime = end;
+				// alert(sound.currentTime)
+				sound.play();
+			})
+			$(document).ready(function() {
+				document.getElementById('res-count').setAttribute("value", "Result(0/" + words.length + ")")
+			});
+
+			function clearScene() {
+				for (i in words) {
+					let el = $('.' + words[i]).children(':first')
+					index = 0
+					answer = ''
+					flag = 0
+					document.getElementById('res-count').setAttribute("value", "Result(0/" + words.length + ")")
+					$('.tips').hide()
+					//隐藏答案
+					document.getElementsByClassName(words[i] + '-text')[0].setAttribute('visible', "false")
+					$('.' + words[i] + '-text').find('.checkImg')[0].setAttribute('src', "#wrong")
+					//追加跟踪
+					if (!el.hasClass('link')) {
+						el.addClass('link')
 					}
-					if (answer_timer) {
-						clearTimeout(answer_timer);
-						answer_timer = null;
-					}
-				
-				});
+					el.parent().find('.check')[0].setAttribute('visible', "false")
+				}
 			}
 		</script>
 	</body>
